@@ -40,7 +40,7 @@
 
 在前面的JavaScript课程中，我们已经知道，JavaScript有且仅有一个全局对象，在浏览器中，叫window对象。
 而在Node.js环境中，也有唯一的全局对象，但不叫window，而叫global，这个对象的属性和方法也和浏览器环境的window不同
-、、、
+```bash
     > global.console
     Console {
     log: [Function: bound ],
@@ -53,12 +53,12 @@
     trace: [Function: bound trace],
     assert: [Function: bound ],
     Console: [Function: Console] }
-、、、
+```
 
 ### 3、process
 
 process也是Node.js提供的一个对象，它代表当前Node.js进程。通过process对象可以拿到许多有用信息：
-、、、
+```bash
     > process === global.process;
     true
     > process.version;
@@ -73,41 +73,41 @@ process也是Node.js提供的一个对象，它代表当前Node.js进程。通�
     undefined
     > process.cwd();
     '/private/tmp'
-、、、
+```
 
 #### process.nextTick()
 如果我们想要在下一次事件响应中执行代码，可以调用process.nextTick()：
 process.nextTick()将在下一轮事件循环中调用:
-、、、
+```javascript
     process.nextTick(function () {
         console.log('nextTick callback!');
     });
     console.log('nextTick was set!');
     nextTick was set!
     nextTick callback!
-这说明传入process.nextTick()的函数不是立刻执行，而是要等到下一次事件循环。
-、、、
+    这说明传入process.nextTick()的函数不是立刻执行，而是要等到下一次事件循环。
+```
 Node.js进程本身的事件就由process对象来处理。如果我们响应exit事件，就可以在程序即将退出时执行某个回调函数：
 
 ### 4、process.on('exit', fn）
 
 程序即将退出时的回调函数:
-、、、
+```javascript
     process.on('exit', function (code) {
         console.log('about to exit with code: ' + code);
     });
-、、、
+```
 
 ### 5、判断JavaScript执行环境
 
  有很多JavaScript代码既能在浏览器中执行，也能在Node环境执行，但有些时候，程序本身需要判断自己到底是在什么环境下执行的，常用的方式就是根据浏览器和Node环境提供的全局变量名称来判断：
-、、、
+```javascript
     if (typeof(window) === 'undefined') {
         console.log('node.js');
     } else {
         console.log('browser');
     }
-、、、
+```
 
 ### 6、fs 读文件 写文件
 
@@ -123,7 +123,7 @@ Node.js进程本身的事件就由process对象来处理。如果我们响应exi
 
 ### pipe
 让我们用pipe()把一个文件流和另一个文件流串起来，这样源文件的所有数据就自动写入到目标文件里了，所以，这实际上是一个复制文件的程序：
-、、、
+```javascript
     'use strict';
 
     var fs = require('fs');
@@ -132,7 +132,7 @@ Node.js进程本身的事件就由process对象来处理。如果我们响应exi
     var ws = fs.createWriteStream('copied.txt');
 
     rs.pipe(ws);
-、、、
+```
 
 ### 9、HTTP
 #### HTTP服务器
