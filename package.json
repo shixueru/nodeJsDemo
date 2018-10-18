@@ -1,0 +1,19 @@
+{
+  "name": "nodejsdemo",
+  "version": "1.0.0",
+  "description": "* 方法一：对module.exports 赋值 、、、     function hello() {         console.log('Hello, world!');     }",
+  "main": "main.js",
+  "dependencies": {
+    "koa": "^2.5.3",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "ws": "^6.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node koa.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
