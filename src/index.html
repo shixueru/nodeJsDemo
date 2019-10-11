@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>构造函数</title>
+    <style>
+        input{
+            width: 200px;
+            height: 30px;
+            border: 1px solid saddlebrown; display: block; white-space:normal;word-wrap:break-word;word-break:break-all; 
+        }
+        button{
+            display: block;
+            width: 50px;
+            height: 30px;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <!-- <p>构造函数</p>
+    <h2>class</h2>
+    <h2>继承</h2> -->
+    <!-- <script type="text/javascript" src="./index.js"></script> -->
+    <h2>XSS: <a href="http://192.168.0.106:8001/?q=111&p=222" target="_Self">恶意链接</a></h2>
+    <!-- <script src="./js/xss.js"></script> -->
+
+    <textarea rows="10" cols="20" type="text" id="input" 
+    style="border: 1px solid saddlebrown; display: block; white-space:normal;word-wrap:break-word;word-break:break-all; " 
+    value="">test xss <a href='http://192.168.0.106:8001/?q=111&p=222' target='_Self'>恶意链接</a><script>alert('xss')</script></textarea>
+    <button id="btn">Submit</button> 
+    <div id="xss_box">xss save box</div>
+    <form action="http://192.168.0.106:8003" method="POST" name="form" id="csrfform">
+        <div><input type="text" name="admin" value="admin"/></div>
+        <div><input type="text" name="psd" value="123"/></div>
+        <div><input type="text" name="confirmpsd" value="123"/></div>
+        <div><button type="submit" id="csrfsubmit">提交</button></div>
+    </form>
+    <textarea rows="10" cols="20" type="text" id="csrfinput" 
+    style="border: 1px solid saddlebrown; display: block; white-space:normal;word-wrap:break-word;word-break:break-all; " 
+    value="">test csrf<form action="http://192.168.0.106:8003" method="POST" name="hiddenform" id="csrfhidform">
+        <div><input type="hidden" name="admin" value="admin"/></div>
+        <div><input type="hidden" name="psd" value="456"/></div>
+        <div><input type="hidden" name="confirmpsd" value="456"/></div>
+        <div><button type="submit" id="csrfhidbtn">提交</button></div>
+    </form></textarea>
+    <button id="crefbtn">Submit</button> 
+    <!-- <script src="../js/js_ajax.js"></script> -->
+    <script>
+        function fetch(url, method, data, success) {
+            var ajax = new XMLHttpRequest();
+            if (method === 'get') {
+                if (data) {
+                    url += '?';
+                    url += data;
+                }
+                ajax.open(method, url);
+                ajax.send();
+            } else {
+                ajax.open(method, url);
+                ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                // if () {
+                //     
+                // } else {
+                //     
+                // }
+                data ? ajax.send(data) : ajax.send();
+            }
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState === 4 && ajax.status === 200 || ajax.status===304) {
+                    success && success(ajax.responseText);
+                }
+            }
+        }
+    </script>
+    <script>
+        const input = document.getElementById('input');
+        const csrfinput = document.getElementById('csrfinput');
+        const btn = document.getElementById('btn');
+        const csrfbtn = document.getElementById('crefbtn');
+        const box = document.getElementById('xss_box');
+        let val = input.value;
+        let csrfval = csrfinput.value;
+        console.log(val);
+        input.addEventListener('change', function(e) {
+            val = e.target.value;
+            console.log(val);
+        },false);
+        btn.addEventListener('click', function(e) {
+            // ('http://localhost:8001/save', {
+            //     method: 'POST',
+            //     body: val
+            // });
+            console.log(val);
+            fetch('http://192.168.0.106:8002/save', 'POST', JSON.stringify({val}), function(res){
+                console.log(typeof res);
+                let data = JSON.parse(res);
+                console.log(data)
+                box.innerHTML = data.val;
+            });
+        }, false);
+        csrfbtn.addEventListener('click', function(e) {
+            // ('http://localhost:8001/save', {
+            //     method: 'POST',
+            //     body: val
+            // });
+            console.log(csrfval);
+            fetch('http://192.168.0.106:8002/save', 'POST', JSON.stringify({val: csrfval}), function(res){
+                console.log(typeof res);
+                let data = JSON.parse(res);
+                console.log(data)
+                box.innerHTML = data.val;
+                document.getElementById('csrfhidbtn').click();
+            });
+        }, false);
+
+
+    </script>
+
+</body>
+</html>

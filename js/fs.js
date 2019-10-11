@@ -1,4 +1,4 @@
-'use strict';
+'';
 var fs = require('fs');
 // 异步读文件
 // fs.readFile('demo.txt', 'utf-8', function(err, data) {

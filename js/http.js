@@ -1,4 +1,4 @@
-'use strict';
+'';
 
 // 导入http模块:
 var http = require('http');

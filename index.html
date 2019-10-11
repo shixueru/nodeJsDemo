@@ -2,11 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>文件服务器</title>
+    <title>Excel的导入导出</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous">
+    </script>
 </head>
 <body>
-    <h2>文件服务器</h2>
+<hr/>
+    导出Excel：<button id="exportexcel">提交</button>
+    <hr/>
+    导入xlsx格式：<button id="importexcelxlsx">提交</button>
+    <hr/>
+    导入csv格式：<button id="importexcecsv">提交</button>
+
+<script>
+    $(function () {
+        $("#exportexcel").on("click",function () {
+            window.open("/exportexcel")
+        });
+        $("#importexcelxlsx").on("click",function () {
+            $.ajax({
+                url : "/importexcelxlsx",
+                type : "POST",
+                data : {},
+                success : function(data){
+                    console.log(data);
+                }
+            });
+        });
+        $("#importexcecsv").on("click",function () {
+            $.ajax({
+                url : "/importexcelcsv",
+                type : "POST",
+                data : {},
+                success : function(data){
+                    console.log(data);
+                }
+            });
+        });
+    })
+
+    window.callback = function (data) {
+        console.log(data);
+    }
+</script>
+<script src="http://coding.m.imooc.com/api.js"></script>
+<script src="build/bundle.js"></script>
 </body>
 </html>
